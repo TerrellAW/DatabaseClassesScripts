@@ -4,39 +4,39 @@ DROP TABLE WGB_CUSTOMER;
 DROP TABLE WGB_ACCOUNT_TYPE;
 
 CREATE TABLE WGB_ACCOUNT_TYPE (
-	/*Account_type		NUMBER(1) PRIMARY KEY,
-	Account_description	VARCHAR2(35)*/
+	Account_type		NUMBER(1) PRIMARY KEY,
+	Account_description	VARCHAR2(35)
 );
 
 CREATE TABLE WGB_CUSTOMER (
-	/*Customer_number	VARCHAR2(7) PRIMARY KEY,
+	Customer_number	VARCHAR2(7) PRIMARY KEY,
 	Surname			VARCHAR2(25) NOT NULL,
 	First_name		VARCHAR2(20) NOT NULL,
 	Street_address		VARCHAR2(20),
 	City			VARCHAR2(25),
 	Province		VARCHAR2(2),
-	Postal_code		VARCHAR2(6)*/
+	Postal_code		VARCHAR2(6)
 );
 
 CREATE TABLE WGB_ACCOUNT (
-	/*Customer_number	VARCHAR2(7) REFERENCES WGB_CUSTOMER(Customer_number),
+	Customer_number	VARCHAR2(7) REFERENCES WGB_CUSTOMER(Customer_number),
 	Account_type		NUMBER(1) REFERENCES WGB_ACCOUNT_TYPE(Account_type),
 	CONSTRAINT PK_Account	PRIMARY KEY (Customer_number, Account_type),
 	Date_created		DATE,
-	Balance			NUMBER(9, 2)*/
+	Balance			NUMBER(9, 2)
 );
 
 CREATE TABLE WGB_TRANSACTION (
-	/*Transaction_number	NUMBER PRIMARY KEY,
+	Transaction_number	NUMBER PRIMARY KEY,
 	Customer_number		VARCHAR2(7) NOT NULL,
 	Account_type		NUMBER(1) NOT NULL,
 	Transaction_amount	NUMBER(9, 2),
 	Transaction_type	VARCHAR2(1),
 	Transaction_date	DATE,
-	FOREIGN KEY(Customer_number, Account_type) REFERENCES WGB_ACCOUNT(Customer_number, Account_type)*/
+	FOREIGN KEY(Customer_number, Account_type) REFERENCES WGB_ACCOUNT(Customer_number, Account_type)
 );
 
-ALTER TABLE WGB_ACCOUNT_TYPE ADD Account_type NUMBER(1);
+/*ALTER TABLE WGB_ACCOUNT_TYPE ADD Account_type NUMBER(1);
 ALTER TABLE WGB_ACCOUNT_TYPE ADD PRIMARY KEY (Account_type);
 ALTER TABLE WGB_ACCOUNT_TYPE ADD Account_description VARCHAR2(35);
 
