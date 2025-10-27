@@ -76,12 +76,12 @@ SELECT * FROM emp, dept;
 */
 
 SELECT *
-	FROM 	emp, dept
+	 FROM 	emp, dept
 	WHERE 	emp.deptno = dept.deptno; -- # join conditions = # columns - 1
 
 -- With table aliases
 SELECT *
-	FROM 	emp e, dept d -- 'e' and 'd' are table aliases
+	 FROM 	emp e, dept d -- 'e' and 'd' are table aliases
 	WHERE 	e.deptno = d.deptno; -- Table aliases can be used right away
 
 /*	RESULT
@@ -115,8 +115,78 @@ SELECT *
 	Tables from WGB_ERD PDF on D2L
 */
 
-SELECT surname, account_description
-	FROM 	WGB_ACCOUNT ac, WGB_CUSTOMER cu, WGB_ACCOUNT_TYPE at
+SELECT 		surname, account_description
+	 FROM 	WGB_ACCOUNT ac, WGB_CUSTOMER cu, WGB_ACCOUNT_TYPE at
 	WHERE 	ac.customer_number 	= 	cu.customer_number
-	AND		ac.account_type		= 	at.account_type; -- Traditional method
+	  AND	ac.account_type		= 	at.account_type; -- Traditional method
+
+---------------------------------------------------------------------
+
+/*	JOIN ... ON
+
+	- No restrictions
+	- Can use for any type of JOIN
+	- Closely resembles syntax of traditional method
+	- JOIN conditions in the FROM clause
+	- Need to prefix columns that are common between tables
+*/
+
+SELECT 		ename, e.deptno, dname
+	 FROM 	emp e 	JOIN 	dept d
+	   				  ON	e.deptno = d.deptno;
+
+SELECT		surname, account_description
+	 FROM	WGB_ACCOUNT ac 	JOIN 	WGB_CUSTOMER cu
+							  ON	ac.customer_number 	=	cu.customer_numer
+							JOIN	WGB_ACCOUNT_TYPE at
+							  ON	ac.account_type		=	at.account_type;
+
+SELECT		transaction_number, transaction_date, account_description
+	 FROM	WGB_TRANSACTION tr	JOIN	WGB_ACCOUNT_TYPE at
+								  ON	at.account_type		=	ac.account_type
+								JOIN	WGB_ACCOUNT ac
+								  ON	tr.customer_number	=	ac.customer_number
+								 AND	tr.account_type		=	ac.account_type;
+
+---------------------------------------------------------------------
+/*	JOIN ... USING
+
+	- Some limitations:
+		> Can only connect tables whose PK and FK column names are the same
+		> Can't prefix the columns that are being JOINed
+*/
+
+SELECT 		ename, e.deptno, dname
+	 FROM	emp		 JOIN	dept
+					USING	(deptno);
+
+SELECT		surname, account_description
+	 FROM	WGB_ACCOUNT		 JOIN	WGB_CUSTOMER
+							USING	(customer_number)
+							 JOIN	WGB_ACCOUNT_TYPE
+							USING	(account_type);
+
+SELECT		transaction_number, transaction_date, account_description
+	 FROM	WGB_TRANSACTION		 JOIN	WGB_ACCOUNT_TYPE
+								USING	(account_type)
+								 JOIN	WGB_ACCOUNT
+								USING	(customer_number, account_type);
+
+---------------------------------------------------------------------
+/*	NATURAL JOIN
+	
+	- Limitations:
+		> Can only connect tables whose PK and FK column names are the same
+		> Can't prefix any columns (no table aliases)
+		> Will automatically connect all column names that are the same between tables
+*/
+
+SELECT		ename, deptno, dname
+	FROM	emp NATURAL JOIN dept;
+
+SELECT		surname, account_description
+	FROM	WGB_ACCOUNT NATURAL JOIN WGB_CUSTOMER NATURAL JOIN WGB_ACCOUNT_TYPE;
+
+SELECT		transaction_number, transaction_date, account_description
+	FROM	WGB_TRANSACTION NATURAL JOIN WGB_ACCOUNT_TYPE NATURAL JOIN WGB_ACCOUNT;
 
