@@ -1,0 +1,248 @@
+PL/SQL is a different language from SQL that is often considered to be an extension of SQL.
+
+- SQL is only way to directly communicate with database
+- SQL cannot be part of the definition of a PL/SQL structure
+- SQL can utilize variables created in PL/SQL
+
+Two structure categories for PL/SQL:
+
+1. Anonymous Block
+	- All code is in one programming block
+	- Not stored in database
+	- No owner, anonymous
+
+2. Stored Program
+	- Broken into smaller pieces, more reusable
+	- Stored in the database
+	- Owned, not anonymous
+	- Easier to share
+	- Multiple stored program types:
+		> Procedures
+			- No return value
+		> Functions
+			- Returns a value
+		> DML triggers
+			- Automates execution of PL/SQL code
+			- Event-driven from the database
+3. Packages
+	- Datastructure similar to a class
+	- Allows overloading
+	- Allows private procedures and functions
+
+===============================================================================
+PL/SQL Syntax Guide
+===============================================================================
+
+Note: PL/SQL is a case-insensitive language, case only matters in single quotes
+	  [OPTIONAL] 
+
+[DECLARE]
+- Where variables are declared
+- Like BASIC, all variables have to be declared
+
+BEGIN
+- Where code functionality goes
+
+[EXCEPTION]
+- Where exceptions are handled
+
+END;
+/
+- Slash indicates end of the program
+
+===============================================================================
+PL/SQL Variables
+===============================================================================
+
+Note: PL/SQL has datatype after variable name, like TypeScript and Kotlin
+
+v_variable datatype;
+
+Variable Names:
+	- V_VARIABLE == v_variable, mixing cases does not make a different variable
+	- Should be descriptive
+	- Maximum of 30 characters
+	- Can include letters, numbers and some special characters (_, $, #)
+	- Name must start with a letter
+
+Instructor's naming standard:
+	- Local variables:  v_variable
+	- Constants: 		k_constant
+	- Records:			r_record
+	- Types:			t_type
+	- Explicit cursors:	c_explicit_cursor
+
+Datatypes:
+	- VARCHAR2(n), dynamic
+	- CHAR(n), fixed
+	- NUMBER(p, s)
+	- DATE
+	- BOOLEAN
+		> Added in version 23
+		> Not in database before version 23
+		> Best to avoid using it
+
+Scalar Variables:
+	- Hold one value
+	- Two ways to define datatypes
+		> Hard code, defined explicitly
+		> Wildcard, gets type from database
+
+		``` PL/SQL
+		DECLARE
+
+			v_empno		NUMBER := 1234;
+
+			v_ename		emp_employee.ename%TYPE;
+
+		BEGIN
+
+			v_ename := 'Bob';
+
+			// For printing a value
+			// Can ony have one input value
+			// Can concatenate
+			// Can print strings, numbers and dates
+			// Cannot print boolean
+			DBMS_OUTPUT.PUT_LINE(v_empno || '' || v_ename);
+
+		END;
+		/
+		```
+
+Constant and NOT NULL variables:
+
+	``` PL/SQL
+	DECLARE
+		// Must initialize at creation since it cannot be null
+		v_test1						VARCHAR2(2) NOT NULL := 'Hi';
+		// Must be initialized at creation as it cannot be changed later
+		k_test2			CONSTANT	NUMBER := 4;
+		v_current_date				DATE;
+		v_flag						BOOLEAN := TRUE;
+
+	BEGIN
+		v_current_date := TO_DATE('Jan 28, 2026', 'Mon dd, yyyy');
+
+		DBMS_OUTPUT.PUT_LINE(v_test1 || '' || v_current_date);
+
+	END;
+	/
+	```
+
+Composite variables:
+	- Can hold multiple values
+	- Composite variable types to not use in the course:
+		> collections/table of records
+	- Will use record extensively
+		> Has attributes, like an object or struct
+		> Two ways to create a record
+			- Custom Record
+				> Manually define structure and attributes
+				> Create datatype of record, ie. the structure
+				> Create variable of the record's type
+
+				``` PL/SQL
+				DECLARE
+					
+					// Manually define the structure and attributes
+					TYPE t_emp IS RECORD (
+						empno			emp_employee.empno%TYPE,
+						ename			emp_employee.ename%TYPE,
+						annual_sal		emp_employee.sal%TYPE,
+						current_date	DATE
+					);
+				
+					// Create the variable
+					r_emp	t_emp;
+
+				BEGIN
+					
+					r_emp.ename := 'Fred';
+					
+					DBMS_OUTPUT.PUT_LINE(r_emp.ename);
+
+				END;
+				/
+				```
+
+			- Wild card for rowtype
+
+				``` PL/SQL
+				DECLARE
+					
+					// Automatically create record based on structure of a table
+					r_emp emp_employee%ROWTYPE;
+
+				BEGIN
+					
+					r_emp.ename := 'Fred';
+					
+					DBMS_OUTPUT.PUT_LINE(r_emp.ename);
+
+				END;
+				/
+				```
+
+===============================================================================
+Using SQL Commands in PL/SQL
+===============================================================================
+
+INSERT, UPDATE, DELETE, COMMIT, ROLLBACK:
+	- Syntax is consistent with SQL
+	- Can use PL/SQL variables in SQL commands
+
+DDL:
+	- Not included inside PL/SQL
+
+SELECT:
+	- Two methods
+		> SELECT INTO
+			- Has restrictions
+			- INTO clause identifies variables where data is stored
+			- INTO always goes between SELECT and FROM
+			- Must retrieve one row of data
+				> If zero rows, NO_DATA_FOUND runtime error
+				> If more than one, TOO_MANY_ROWS runtime error
+		> Explicit cursors and loops
+
+Scalar Example:
+
+	``` PL/SQL
+	DECLARE
+		
+		k_empno		CONSTANT	emp_employee.empno%TYPE := 7984; // Will get NO_DATA_FOUND if empno is not in table
+		v_ename					emp_employee.ename%TYPE;
+		v_deptno				emp_employee.deptno%TYPE;
+
+	BEGIN
+		
+		SELECT ename, deptno
+			INTO v_ename, v_deptno
+			FROM emp_employee
+		   WHERE empno = k_empno; // With a condition that returns multiple employees there would be a TOO_MANY_ROWS
+
+			DBMS_OUTPUT.PUT_LINE(v_ename);
+	END;
+	/
+	```
+
+Record Example:
+	
+	``` PL/SQL
+	DECLARE
+		
+		k_empno		CONSTANT	emp_employee.empno%TYPE := 7984;
+		r_emp					emp_employee%ROWTYPE;
+
+	BEGIN
+		
+		SELECT *
+			INTO r_emp
+			FROM emp_employee
+		   WHERE empno = k_empno;
+
+			DBMS_OUTPUT.PUT_LINE(r_emp.ename);
+	END;
+	/
+	```
