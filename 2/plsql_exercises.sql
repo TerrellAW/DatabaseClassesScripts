@@ -9,6 +9,7 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE(ROUND(k_new_years - SYSDATE, 0));
 
 END;
+/
 
 -- Using EMP_EMPLOYEE table, if number of employees in Paula Phillips' 
 -- department is less than 4 print "Need to hire employees."
@@ -53,6 +54,7 @@ BEGIN
 	*/
 
 END;
+/
 
 /*
 Display numbers from 1 to 100:
@@ -93,6 +95,7 @@ BEGIN
 	END LOOP;
 
 END;
+/
 
 -- Same problem but use WHILE loop and SEARCH CASE
 DECLARE
@@ -128,6 +131,7 @@ BEGIN
 	END LOOP;
 
 END;
+/
 
 -- Same problem but use basic LOOP and CASE expression
 DECLARE
