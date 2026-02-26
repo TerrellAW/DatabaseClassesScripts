@@ -96,3 +96,110 @@ EXCEPTION
 
 END;
 /
+
+DECLARE
+	
+	v_char1		CHAR := 'A';
+	v_char2		CHAR := 'B';
+
+BEGIN
+
+	-- Will output 'A'
+	DBMS_OUTPUT.PUT_LINE(v_char1);
+
+	DECLARE
+
+		v_char1 CHAR := 'Q';
+		v_char3 CHAR := 'C';
+
+	BEGIN
+
+		v_char1 := 'P';
+
+		-- Will output 'PB'
+		DBMS_OUTPUT.PUT_LINE(v_char1 || v_char2);
+		-- Will output 'PC'
+		DBMS_OUTPUT.PUT_LINE(v_char1 || v_char3);
+	END;
+
+	-- Will output 'AB'
+	DBMS_OUTPUT.PUT_LINE(v_char1 || v_char2);
+
+END;
+/
+
+DECLARE
+
+	v_salary		NUMBER;
+
+BEGIN
+
+	BEGIN
+
+		SELECT salary
+		  INTO v_salary
+		  FROM emp_employee
+		 WHERE empno = 7994;
+	
+	EXCEPTION
+
+		WHEN no_data_found THEN
+			RAISE_APPLICATION_ERROR(
+				-20000,
+				'7994 is an invalid empno'
+			);
+	END;
+
+	BEGIN
+
+		SELECT salary
+		  INTO v_salary
+		  FROM emp_employee
+		 WHERE empno = 1;
+	
+	EXCEPTION
+
+		WHEN no_data_found THEN
+			RAISE_APPLICATION_ERROR(
+				-20001,
+				'1 is an invalid empno'
+			);
+	
+	END;
+
+EXCEPTION
+
+	WHEN others THEN
+		DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+
+DECLARE
+
+	CURSOR c_emp IS
+		SELECT *
+		  FROM emp_employee;
+
+BEGIN
+
+	FOR r_emp IN c_emp LOOP
+
+		BEGIN
+
+			IF (r_emp.salary < 2000) THEN
+				RAISE_APPLICATION_ERROR(-20000, 'ERROR!');
+			END IF;
+
+			DBMS_OUTPUT.PUT_LINE('Inside loop');
+
+		EXCEPTION
+
+			WHEN others THEN
+				DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		END;
+
+	END LOOP;
+
+END;
+/
