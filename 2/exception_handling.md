@@ -367,3 +367,75 @@ BEGIN
 END;
 /
 ```
+
+#### Data Validation
+
+Determine if a data object is valid with two general methods:
+
+1. Using an embedded block:
+
+``` SQL
+DECLARE
+	
+	v_student_id	student.student_id%TYPE;
+
+BEGIN
+
+-- functionality here
+
+	BEGIN
+
+		SELECT student_id
+		  INTO v_student_id
+		  FROM student
+		 WHERE student_id = '1223';
+
+	EXCEPTION
+
+		-- If student does not exist in database
+		WHEN no_data_found THEN
+			RAISE_APPLICATION_ERROR(
+				-20000,
+				'Student is not valid'
+			);
+	END;
+
+EXCEPTION
+
+	WHEN others THEN
+		DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+```
+
+2. Using `COUNT` and `IF` or `CASE`:
+
+``` SQL
+DECLARE
+
+	v_count		NUMBER;
+
+BEGIN
+
+	-- functionality here
+
+	SELECT COUNT(*)
+	  INTO v_count
+	  FROM student
+	 WHERE student_id = '1223';
+
+	IF (v_count = 0) THEN
+		RAISE_APPLICATION_ERROR(
+			-20000,
+			'Student is not valid'
+		);
+
+EXCEPTION
+
+	WHEN others THEN
+		DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+```
