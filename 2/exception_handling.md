@@ -430,6 +430,7 @@ BEGIN
 			-20000,
 			'Student is not valid'
 		);
+	END IF;
 
 EXCEPTION
 
