@@ -1,4 +1,4 @@
-### Cursors
+## Cursors
 
 1. Implicit Cursor
     - Automatically created with SQL command
