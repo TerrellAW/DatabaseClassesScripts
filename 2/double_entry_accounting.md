@@ -70,7 +70,9 @@ A double entry account transaction is made up of atleast two rows of data.
 
 ``` math
 A = L + OE
+```
 
+``` math
 A = L + OE + RE - EX
 ```
 
@@ -78,7 +80,7 @@ A = L + OE + RE - EX
 
 Transaction using accounting notation:
 
-``` math
+```
 Dr: Office Supply Expense      200
   Cr: Cash                       150
   Cr: Office Supply Payables      50
