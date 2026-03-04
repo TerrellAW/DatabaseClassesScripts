@@ -92,8 +92,5 @@ Debits = Credits, so it is valid.
 When a transaction is not its default type it is negative, else it is positive.
 In this case office supply expense is increasing, cash is decreasing and office supply payables is increasing.
 
-``` math
-A(Decreasing) = L(Increasing) + OE(Decreasing) + RE - EX(Increasing)
-```
 
 
