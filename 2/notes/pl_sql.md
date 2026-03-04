@@ -62,34 +62,38 @@ Note: PL/SQL has datatype after variable name, like TypeScript and Kotlin
 `v_variable datatype;`
 
 #### Variable Names:
-	- `V_VARIABLE == v_variable`, mixing cases does not make a different variable
-	- Should be descriptive
-	- Maximum of 30 characters
-	- Can include letters, numbers and some special characters (_, $, #)
-	- Name must start with a letter
+
+- `V_VARIABLE == v_variable`, mixing cases does not make a different variable
+- Should be descriptive
+- Maximum of 30 characters
+- Can include letters, numbers and some special characters (_, $, #)
+- Name must start with a letter
 
 #### Instructor's naming standard:
-	- Local variables:  `v_variable`
-	- Constants: 		`k_constant`
-	- Records:			`r_record`
-	- Types:			`t_type`
-	- Explicit cursors:	`c_explicit_cursor`
+
+- Local variables:  `v_variable`
+- Constants: 		`k_constant`
+- Records:			`r_record`
+- Types:			`t_type`
+- Explicit cursors:	`c_explicit_cursor`
 
 #### Datatypes:
-	- `VARCHAR2(n)`, dynamic
-	- `CHAR(n)`, fixed
-	- `NUMBER(p, s)`
-	- `DATE`
-	- `BOOLEAN`
-		- Added in version 23
-		- Not in database before version 23
-		- Best to avoid using it
+
+- `VARCHAR2(n)`, dynamic
+- `CHAR(n)`, fixed
+- `NUMBER(p, s)`
+- `DATE`
+- `BOOLEAN`
+    - Added in version 23
+    - Not in database before version 23
+    - Best to avoid using it
 
 #### Scalar Variables:
-	- Hold one value
-	- Two ways to define datatypes
-		- Hard code, defined explicitly
-		- Wildcard, gets type from database
+
+- Hold one value
+- Two ways to define datatypes
+    - Hard code, defined explicitly
+    - Wildcard, gets type from database
 
 ``` SQL
 DECLARE
@@ -170,7 +174,6 @@ BEGIN
 END;
 /
 ```
-			- Wild card for rowtype
 
 ``` SQL
 DECLARE
@@ -191,22 +194,25 @@ END;
 ### Using SQL Commands in PL/SQL
 
 #### INSERT, UPDATE, DELETE, COMMIT, ROLLBACK:
-	- Syntax is consistent with SQL
-	- Can use PL/SQL variables in SQL commands
+
+- Syntax is consistent with SQL
+- Can use PL/SQL variables in SQL commands
 
 #### DDL:
-	- Not included inside PL/SQL
+
+- Not included inside PL/SQL
 
 #### SELECT:
-	- Two methods
-		- `SELECT INTO`
-			- Has restrictions
-			- `INTO` clause identifies variables where data is stored
-			- `INTO` always goes between `SELECT` and `FROM`
-			- Must retrieve one row of data
-				- If zero rows, `NO_DATA_FOUND` runtime error
-				- If more than one, `TOO_MANY_ROWS` runtime error
-		- Explicit cursors and loops
+
+- Two methods
+    - `SELECT INTO`
+        - Has restrictions
+        - `INTO` clause identifies variables where data is stored
+        - `INTO` always goes between `SELECT` and `FROM`
+        - Must retrieve one row of data
+            - If zero rows, `NO_DATA_FOUND` runtime error
+            - If more than one, `TOO_MANY_ROWS` runtime error
+    - Explicit cursors and loops
 
 #### Scalar Example:
 
