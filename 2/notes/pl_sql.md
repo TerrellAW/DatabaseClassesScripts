@@ -140,16 +140,17 @@ END;
 ```
 
 #### Composite variables:
-	- Can hold multiple values
-	- Composite variable types to not use in the course:
-		- collections/table of records
-	- Will use record extensively
-		- Has attributes, like an object or struct
-		- Two ways to create a record
-			- Custom Record
-				- Manually define structure and attributes
-				- Create datatype of record, ie. the structure
-				- Create variable of the record's type
+
+- Can hold multiple values
+- Composite variable types to not use in the course:
+    - collections/table of records
+- Will use record extensively
+    - Has attributes, like an object or struct
+    - Two ways to create a record
+        - Custom Record
+            - Manually define structure and attributes
+            - Create datatype of record, ie. the structure
+            - Create variable of the record's type
 
 ``` SQL
 DECLARE
