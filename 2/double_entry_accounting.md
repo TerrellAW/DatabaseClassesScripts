@@ -68,6 +68,7 @@ A double entry account transaction is made up of atleast two rows of data.
 
 #### Accounting Equation
 
+<div align=left>
 ``` math
 A = L + OE
 ```
@@ -75,6 +76,7 @@ A = L + OE
 ``` math
 A = L + OE + RE - EX
 ```
+</div>
 
 ### Examples
 
@@ -88,9 +90,14 @@ Dr: Office Supply Expense      200
 ```
 
 Debits = Credits, so it is valid.
+
 When a transaction is not its default type it is negative, else it is positive.
 In this case office supply expense is increasing, cash is decreasing and office supply payables is increasing.
 
+<div align=left>
 ``` math
 A(Decreasing) = L(Increasing) + OE(Decreasing) + RE - EX(Increasing)
 ```
+</div>
+
+
