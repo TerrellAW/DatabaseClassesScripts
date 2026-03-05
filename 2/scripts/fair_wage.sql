@@ -3,15 +3,19 @@ DECLARE
 	-- Hard-coded constants
 	k_pres			CONSTANT	CHAR(9)			:= 'PRESIDENT';
 	k_half			CONSTANT	NUMBER(3, 2)	:= 0.50;
-	k_qart			CONSTANT	NUMBER(3, 2)	:= 0.25;
+	k_qart			CONSTANT	NUMBER(3, 2)	:= 0.75;
 	k_tnth			CONSTANT	NUMBER(3, 2)	:= 0.10;
-	k_minsal		CONSTANT	NUMBER(3)		:= 100;
-	k_maxcom		CONSTANT	NUMBER(3, 2)	:= 0.22;
+	k_min_sal		CONSTANT	NUMBER(3)		:= 100;
+	k_max_com		CONSTANT	NUMBER(3, 2)	:= 0.22;
 
 	-- Variables for printing
 	v_avg_sal					NUMBER(10, 2);
 	v_pres_sal					NUMBER(10, 2);
-	v_lowcom					NUMBER;
+	v_low_com					NUMBER;
+
+	-- Variables for logic
+	v_half_sal					NUMBER(10, 2);
+	v_lowr_sal					NUMBER(10, 2);
 
 	-- Cursors
 	CURSOR c_emp IS
@@ -38,11 +42,27 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('----------------------');
 	DBMS_OUTPUT.PUT_LINE('');
 
-	--FOR r_emp IN c_emp LOOP
+	FOR r_emp IN c_emp LOOP
 
-		-- TODO: Lowest commission in a department
+		-- Handle salaries higher than president's
+		IF (r_emp.job != k_pres AND r_emp.salary > v_pres_sal) THEN
 
-	--END LOOP;
+			v_half_sal := r_emp.salary * k_half;
+			v_lowr_sal := v_pres_sal * k_qart;
+
+			IF (v_half_sal > v_lowr_sal) THEN
+
+				-- TODO: SQL statement to make r_emp.salary := v_lowr_sal
+
+			ELSE
+
+				-- TODO: SQL statement to make r_emp.salary := v_half_sal
+
+			END IF;
+
+		END IF;
+
+	END LOOP;
 
 END;
 /
