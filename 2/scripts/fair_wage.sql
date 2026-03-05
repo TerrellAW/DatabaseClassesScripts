@@ -29,7 +29,7 @@ BEGIN
 	  INTO v_avg_sal
 	  FROM emp_employee;
 
-	DBMS_OUTPUT.PUT_LINE('Average Salary: $' || v_avg_sal);
+	DBMS_OUTPUT.PUT_LINE('AVERAGE Salary: $' || v_avg_sal);
 	DBMS_OUTPUT.PUT_LINE('----------------------');
 
 	-- Fetch and print President's salary
@@ -38,7 +38,7 @@ BEGIN
 	  FROM emp_employee
 	 WHERE job = k_pres;
 
-	DBMS_OUTPUT.PUT_LINE('President Salary: $' || v_pres_sal);
+	DBMS_OUTPUT.PUT_LINE(k_pres || ' Salary: $' || v_pres_sal);
 	DBMS_OUTPUT.PUT_LINE('----------------------');
 	DBMS_OUTPUT.PUT_LINE('');
 
@@ -47,16 +47,60 @@ BEGIN
 		-- Handle salaries higher than president's
 		IF (r_emp.job != k_pres AND r_emp.salary > v_pres_sal) THEN
 
+			DBMS_OUTPUT.PUT_LINE(
+				r_emp.job 					||
+				' '							||
+				r_emp.empno 				||
+				' has higher salary than ' 	||
+				k_pres
+			);
+
+			DBMS_OUTPUT.PUT_LINE('');
+
+			DBMS_OUTPUT.PUT_LINE(
+				r_emp.job		||
+				' '				||
+				r_emp.empno 	||
+				' salary: $' 	||
+				r_emp.salary
+			);
+
+			DBMS_OUTPUT.PUT_LINE('');
+
 			v_half_sal := r_emp.salary * k_half;
 			v_lowr_sal := v_pres_sal * k_qart;
 
 			IF (v_half_sal > v_lowr_sal) THEN
 
-				-- TODO: SQL statement to make r_emp.salary := v_lowr_sal
+				UPDATE emp_employee
+				   SET salary = v_lowr_sal
+				 WHERE empno = r_emp.empno;
+
+				COMMIT;
+
+				DBMS_OUTPUT.PUT_LINE(
+					r_emp.job		 ||
+					' '				 ||
+					r_emp.empno 	 ||
+					' new salary: $' ||
+					v_lowr_sal
+				);
 
 			ELSE
 
-				-- TODO: SQL statement to make r_emp.salary := v_half_sal
+				UPDATE emp_employee
+				   SET salary = v_half_sal
+				 WHERE empno = r_emp.empno;
+
+				COMMIT;
+
+				DBMS_OUTPUT.PUT_LINE(
+					r_emp.job		 ||
+					' '				 ||
+					r_emp.empno 	 ||
+					' new salary: $' ||
+					v_half_sal
+				);
 
 			END IF;
 
