@@ -4,7 +4,7 @@ DECLARE
 	k_pres			CONSTANT	CHAR(9)			:= 'PRESIDENT';
 	k_half			CONSTANT	NUMBER(3, 2)	:= 0.50;
 	k_qart			CONSTANT	NUMBER(3, 2)	:= 0.75;
-	k_tnth			CONSTANT	NUMBER(3, 2)	:= 0.10;
+	k_tnth			CONSTANT	NUMBER(3, 2)	:= 1.10;
 	k_min_sal		CONSTANT	NUMBER(3)		:= 100;
 	k_max_com		CONSTANT	NUMBER(3, 2)	:= 0.22;
 
@@ -16,6 +16,7 @@ DECLARE
 	-- Variables for logic
 	v_half_sal					NUMBER(10, 2);
 	v_lowr_sal					NUMBER(10, 2);
+	v_new_sal					NUMBER(10, 2);
 
 	-- Cursors
 	CURSOR c_emp IS
@@ -43,6 +44,51 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('');
 
 	FOR r_emp IN c_emp LOOP
+		
+		-- Handle salaries lower than k_min_sal
+		IF (r_emp.salary < k_min_sal) THEN
+
+			DBMS_OUTPUT.PUT_LINE(
+				r_emp.job					||
+				' '							||
+				r_emp.empno					||
+				' has salary lower than '	||
+				k_min_sal
+			);
+
+			DBMS_OUTPUT.PUT_LINE('');
+
+			DBMS_OUTPUT.PUT_LINE(
+				r_emp.job		||
+				' '				||
+				r_emp.empno 	||
+				' salary: $' 	||
+				r_emp.salary
+			);
+
+			DBMS_OUTPUT.PUT_LINE('');
+
+			v_new_sal := r_emp.salary * k_tnth;
+
+			IF (v_new_sal < v_avg_sal) THEN
+
+				UPDATE emp_employee
+				   SET salary = v_new_sal
+				 WHERE empno = r_emp.empno;
+
+				COMMIT;
+
+				DBMS_OUTPUT.PUT_LINE(
+					r_emp.job		 ||
+					' '				 ||
+					r_emp.empno 	 ||
+					' new salary: $' ||
+					v_new_sal
+				);
+
+			END IF;
+
+		END IF;
 
 		-- Handle salaries higher than president's
 		IF (r_emp.job != k_pres AND r_emp.salary > v_pres_sal) THEN
